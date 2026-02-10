@@ -1,0 +1,16 @@
+#pragma once
+#include <stdint.h>
+#include <stdbool.h>
+
+typedef struct {
+    uint16_t ch[16];
+    bool signal_ok;
+    bool failsafe;
+} rc_data_t;
+
+extern rc_data_t rc;
+
+void rc_init(void);
+void rc_update(void);
+
+bool rc_signal_lost(void);

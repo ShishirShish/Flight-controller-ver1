@@ -1,0 +1,27 @@
+#include "pid.h"
+
+static pid_t pid_roll, pid_pitch, pid_yaw;
+pid_output_t pid_out;
+
+void pid_init(void)
+{
+    pid_roll = (pid_t){0.12f, 0.08f, 0.003f, 0, 0};
+    pid_pitch = pid_roll;
+    pid_yaw = (pid_t){0.15f, 0.05f, 0.0f, 0, 0};
+}
+
+float pid_update(pid_t *p, float sp, float meas)
+{
+    float err = sp - meas;
+    p->i += err * p->ki;
+    float d = (err - p->prev) * p->kd;
+    p->prev = err;
+    return p->kp * err + p->i + d;
+}
+
+void pid_compute(void)
+{
+    pid_out.roll  = pid_update(&pid_roll, 0, imu.gx);
+    pid_out.pitch = pid_update(&pid_pitch, 0, imu.gy);
+    pid_out.yaw   = pid_update(&pid_yaw, 0, imu.gz);
+}

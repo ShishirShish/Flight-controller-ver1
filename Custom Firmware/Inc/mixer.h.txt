@@ -1,0 +1,7 @@
+#pragma once
+#include "fc_config.h"
+
+extern float motor_output[MOTOR_COUNT];
+
+void mixer_init(void);
+void mixer_run(void);

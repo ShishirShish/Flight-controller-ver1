@@ -1,0 +1,28 @@
+#include "motor.h"
+#include "dshot.h"
+#include "utils.h"
+
+void motor_init(void)
+{
+    dshot_init(DSHOT600);
+}
+
+void motor_set(uint8_t motor, uint16_t value)
+{
+    value = constrain_u16(value, DSHOT_MIN_THROTTLE, DSHOT_MAX_THROTTLE);
+    dshot_send(motor, value);
+}
+
+void motor_update(void)
+{
+    for (uint8_t i = 0; i < MOTOR_COUNT; i++) {
+        motor_set(i, (uint16_t)motor_output[i]);
+    }
+}
+
+void motor_stop_all(void)
+{
+    for (uint8_t i = 0; i < MOTOR_COUNT; i++) {
+        dshot_send(i, 0);
+    }
+}

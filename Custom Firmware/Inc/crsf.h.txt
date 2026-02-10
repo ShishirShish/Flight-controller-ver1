@@ -1,0 +1,5 @@
+#pragma once
+#include <stdint.h>
+
+void crsf_init(void);
+void crsf_parse(uint8_t *packet);

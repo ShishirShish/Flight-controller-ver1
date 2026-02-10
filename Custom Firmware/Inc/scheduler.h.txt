@@ -1,0 +1,8 @@
+#pragma once
+#include "stm32f4xx_hal.h"
+
+extern volatile uint8_t imu_flag;
+extern volatile uint8_t pid_flag;
+
+void scheduler_8khz_callback(void);
+void scheduler_1khz_callback(void);

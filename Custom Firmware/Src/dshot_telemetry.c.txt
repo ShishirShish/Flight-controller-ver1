@@ -1,0 +1,7 @@
+void dshot_rx_start(uint8_t motor)
+{
+    HAL_TIM_IC_Start_DMA(&htim2,
+        TIM_CHANNEL_1,
+        rx_buffer,
+        20);
+}

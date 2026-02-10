@@ -1,0 +1,15 @@
+#include "utils.h"
+
+float constrain_float(float x, float min, float max)
+{
+    if (x < min) return min;
+    if (x > max) return max;
+    return x;
+}
+
+uint16_t constrain_u16(uint16_t x, uint16_t min, uint16_t max)
+{
+    if (x < min) return min;
+    if (x > max) return max;
+    return x;
+}

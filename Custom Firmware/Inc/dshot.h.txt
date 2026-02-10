@@ -1,0 +1,11 @@
+#pragma once
+#include "stm32f4xx_hal.h"
+#include <stdint.h>
+
+void dshot_init(uint16_t mode);
+void dshot_send(uint8_t motor, uint16_t throttle);
+void dshot_send_all(uint16_t *values);
+
+/* Bidirectional telemetry */
+void dshot_telemetry_start(uint8_t motor);
+uint16_t dshot_get_rpm(uint8_t motor);

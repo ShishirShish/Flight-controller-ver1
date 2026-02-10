@@ -1,0 +1,18 @@
+#pragma once
+#include <stdbool.h>
+
+typedef enum {
+    FC_DISARMED,
+    FC_ARMED,
+    FC_FAILSAFE
+} fc_state_t;
+
+extern fc_state_t fc_state;
+
+void failsafe_init(void);
+void failsafe_check(void);
+
+bool failsafe_active(void);
+
+void fc_arm(void);
+void fc_disarm(void);

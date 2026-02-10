@@ -1,0 +1,7 @@
+#pragma once
+#include "mavlink.h"
+
+void mavlink_init(void);
+void mavlink_send_heartbeat(void);
+void mavlink_send_attitude(float roll, float pitch, float yaw);
+void mavlink_process(void);

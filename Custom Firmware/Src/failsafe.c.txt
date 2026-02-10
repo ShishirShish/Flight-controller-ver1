@@ -1,0 +1,35 @@
+#include "failsafe.h"
+#include "rc.h"
+#include "motor.h"
+
+fc_state_t fc_state = FC_DISARMED;
+
+void failsafe_init(void)
+{
+    fc_state = FC_DISARMED;
+}
+
+void failsafe_check(void)
+{
+    if (rc_signal_lost()) {
+        fc_state = FC_FAILSAFE;
+        motor_stop_all();
+    }
+}
+
+bool failsafe_active(void)
+{
+    return fc_state == FC_FAILSAFE;
+}
+
+void fc_arm(void)
+{
+    if (fc_state == FC_DISARMED)
+        fc_state = FC_ARMED;
+}
+
+void fc_disarm(void)
+{
+    fc_state = FC_DISARMED;
+    motor_stop_all();
+}

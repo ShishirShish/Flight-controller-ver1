@@ -1,0 +1,14 @@
+#include "scheduler.h"
+
+volatile uint8_t imu_flag = 0;
+volatile uint8_t pid_flag = 0;
+
+void scheduler_8khz_callback(void)
+{
+    imu_flag = 1;
+}
+
+void scheduler_1khz_callback(void)
+{
+    pid_flag = 1;
+}

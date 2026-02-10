@@ -1,0 +1,18 @@
+#include "rc.h"
+
+rc_data_t rc;
+
+void rc_init(void)
+{
+    rc.signal_ok = false;
+}
+
+void rc_update(void)
+{
+    /* updated via UART ISR */
+}
+
+bool rc_signal_lost(void)
+{
+    return !rc.signal_ok;
+}

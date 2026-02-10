@@ -1,0 +1,88 @@
+#include "main.h"
+#include "scheduler.h"
+#include "imu.h"
+#include "pid.h"
+#include "mixer.h"
+#include "motor.h"
+#include "rc.h"
+#include "failsafe.h"
+#include "mavlink.h"
+
+extern TIM_HandleTypeDef htim6; // 1kHz
+extern TIM_HandleTypeDef htim7; // 8kHz
+
+volatile uint8_t imu_flag = 0;
+volatile uint8_t pid_flag = 0;
+
+uint32_t last_heartbeat = 0;
+uint32_t last_attitude = 0;
+
+int main(void)
+{
+    HAL_Init();
+    SystemClock_Config();
+
+    MX_GPIO_Init();
+    MX_DMA_Init();
+    MX_I2C1_Init();
+    MX_I2C3_Init();
+    MX_USART1_UART_Init(); // SBUS
+    MX_USART2_UART_Init(); // MAVLink
+    MX_USART6_UART_Init(); // CRSF
+    MX_TIM2_Init();
+    MX_TIM3_Init();
+    MX_TIM6_Init();
+    MX_TIM7_Init();
+
+    imu_init();
+    motor_init();
+    rc_init();
+    failsafe_init();
+    pid_init();
+    mavlink_init();
+
+    HAL_TIM_Base_Start_IT(&htim7); // 8kHz
+    HAL_TIM_Base_Start_IT(&htim6); // 1kHz
+
+    HAL_UART_Receive_IT(&huart2, &rx_byte, 1); // MAVLink
+
+    while (1)
+    {
+        /* 8 kHz IMU */
+        if (imu_flag) {
+            imu_flag = 0;
+            imu_read_dma();
+        }
+
+        /* 1 kHz Control Loop */
+        if (pid_flag) {
+            pid_flag = 0;
+
+            if (failsafe_active()) {
+                motor_stop_all();
+                continue;
+            }
+
+            pid_compute();
+            mixer_run();
+            motor_update();
+        }
+
+        /* RC + failsafe */
+        rc_update();
+        failsafe_check();
+
+        /* MAVLink */
+        uint32_t now = HAL_GetTick();
+
+        if (now - last_heartbeat >= 1000) {
+            last_heartbeat = now;
+            mavlink_send_heartbeat();
+        }
+
+        if (now - last_attitude >= 20) {
+            last_attitude = now;
+            mavlink_send_attitude(att.roll, att.pitch, att.yaw);
+        }
+    }
+}

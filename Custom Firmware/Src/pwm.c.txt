@@ -1,0 +1,8 @@
+#include "pwm.h"
+
+extern TIM_HandleTypeDef htim3;
+
+void pwm_set(uint8_t ch, uint16_t us)
+{
+    __HAL_TIM_SET_COMPARE(&htim3, ch, us);
+}

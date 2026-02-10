@@ -1,0 +1,7 @@
+#pragma once
+#include <stdint.h>
+
+#define SBUS_FRAME_LEN 25
+
+void sbus_init(void);
+void sbus_decode(uint8_t *frame);

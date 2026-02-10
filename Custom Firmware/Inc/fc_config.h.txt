@@ -1,0 +1,32 @@
+#pragma once
+
+/* ================= FC CONFIG ================= */
+
+#define FC_CPU_FREQ_HZ     84000000
+
+#define IMU_RATE_HZ        8000
+#define PID_RATE_HZ        1000
+
+#define MOTOR_COUNT        6
+
+/* ================= DSHOT ================= */
+
+#define DSHOT600           600
+#define DSHOT1200          1200
+
+#define DSHOT_MIN_THROTTLE 48
+#define DSHOT_MAX_THROTTLE 2047
+
+/* ================= RC ================= */
+
+#define RC_CHANNELS        16
+#define RC_TIMEOUT_MS      300
+
+/* ================= MAVLINK ================= */
+
+#define MAV_SYS_ID         1
+#define MAV_COMP_ID        200
+
+/* ================= FAILSAFE ================= */
+
+#define FAILSAFE_TIMEOUT_MS 500

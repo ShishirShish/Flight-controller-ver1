@@ -1,0 +1,18 @@
+#include "mixer.h"
+#include "pid.h"
+
+float motor_output[MOTOR_COUNT];
+
+void mixer_init(void) {}
+
+void mixer_run(void)
+{
+    float t = 500; /* placeholder throttle */
+
+    motor_output[0] = t + pid_out.roll - pid_out.pitch + pid_out.yaw;
+    motor_output[1] = t - pid_out.roll - pid_out.pitch - pid_out.yaw;
+    motor_output[2] = t - pid_out.roll + pid_out.pitch + pid_out.yaw;
+    motor_output[3] = t + pid_out.roll + pid_out.pitch - pid_out.yaw;
+    motor_output[4] = t;
+    motor_output[5] = t;
+}

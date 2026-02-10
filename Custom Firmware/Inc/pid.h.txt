@@ -1,0 +1,21 @@
+#pragma once
+
+typedef struct {
+    float kp;
+    float ki;
+    float kd;
+    float i;
+    float prev;
+} pid_t;
+
+typedef struct {
+    float roll;
+    float pitch;
+    float yaw;
+} pid_output_t;
+
+extern pid_output_t pid_out;
+
+void pid_init(void);
+void pid_compute(void);
+float pid_update(pid_t *p, float setpoint, float measured);

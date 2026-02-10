@@ -1,0 +1,14 @@
+#pragma once
+#include <stdint.h>
+#include "fc_config.h"
+
+typedef enum {
+    MOTOR_STOPPED,
+    MOTOR_ARMED
+} motor_state_t;
+
+void motor_init(void);
+void motor_update(void);
+void motor_stop_all(void);
+
+void motor_set(uint8_t motor, uint16_t value);
